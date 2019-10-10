@@ -1,9 +1,23 @@
-<ion-header>
+<ion-header class="margin-bottom">
   <ion-toolbar>
-    <ion-title>detail</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button text="" defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="text-capitalize">Tu Consulta</ion-title>
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content>
+  <ion-card>
+    <ion-card-header>
+      Hola {{data.nombre}}
+    </ion-card-header>
+    <ion-card-content>
+      <ion-text><p>El Status de tu consulta es: {{ data.tramiteStatus}} </p></ion-text>
+      <ion-text><p>Iniciaste el tramite el dia:  {{ data.inicioTramite}}</p></ion-text>
+      <ion-text><p>Tu precaria vence el dia: {{data.vencimientoTramite}}</p></ion-text>
+    </ion-card-content>
+  </ion-card>
 
 </ion-content>

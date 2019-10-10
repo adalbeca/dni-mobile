@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import * as moment from 'moment';
 import {DataService} from '../../services/data.service';
-import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
+import {Storage} from '@ionic/storage';
 
 @Component({
     selector: 'app-home',
@@ -17,11 +17,25 @@ export class HomePage implements OnInit {
     maxDate: Date = new Date();
     customPickerOptions;
     myData: object;
+    tempData: object;
+    isChecked: false;
+    defaultData: object;
 
-    constructor(private router: Router, private dataService: DataService ) {
+    constructor(
+        private storage: Storage,
+        private router: Router,
+        private dataService: DataService ) {
+        this.storage.get('data').then((val) => {
+            console.log('el storage', val);
+            this.defaultData = val;
+        });
+
     }
-
     ngOnInit() {
+
+        this.storage.get('checked').then(val => this.isChecked = val);
+        console.log('reviso', this.defaultData);
+
         this.customPickerOptions = {
             buttons: [{
                 text: 'Ok',
@@ -34,8 +48,9 @@ export class HomePage implements OnInit {
                 }
             }]
         };
-        console.log(this.maxDate.toISOString());
     }
+
+
 
     getDate(event) {
         const date = moment(event.detail.value);
@@ -47,12 +62,33 @@ export class HomePage implements OnInit {
     getInput(event) {
         this.exp = event.detail.value;
     }
+    setStorage(event) {
+        if (!event.target.checked) {
+            this.storage.set('checked', true);
+        } else {
+            this.storage.remove('data');
+            this.storage.set('checked', false);
+        }
+        this.isChecked = event.target.checked;
+    }
 
-    getFromData() {
-        const data = {exp: this.exp, dia: this.dia, mes: this.mes, anio: this.anio};
-        this.dataService.getData(data)
-            .subscribe((value) => this.myData = value);
-        this.router.navigate(['detail'], this.myData);
+    async getFromData() {
+        if (this.exp) {
+            this.tempData = {exp: '1410852017', dia: '05', mes: '05', anio: '1983'};
+            const data = {exp: this.exp, dia: this.dia, mes: this.mes, anio: this.anio};
+            await this.dataService.getData(data)
+                .subscribe(value => {
+                    console.log('chequeo', this.isChecked);
+                    console.log('llega', value);
+                    if (value) {
+                        if (this.isChecked) {
+                            this.storage.set('data', JSON.stringify(data));
+                        }
+                    }
+                    this.router.navigate(['detail'], value);
+                })
+            ;
+        }
     }
 
 }

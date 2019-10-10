@@ -9,7 +9,6 @@ export class DataService {
   constructor(private http: HttpClient) { }
 
   getData(data) {
-    console.log(data);
     //const data = {exp: '1410852017', dia: '05', mes: '05', anio: '1983'};
     return this.http.post('https://api-dni.adalbeca.com/giveme', data);
   }
