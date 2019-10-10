@@ -23,8 +23,17 @@
                         </ion-item>
                     </ion-card-content>
                     <ion-card-header>
-                            <ion-button> Consultar </ion-button>
+                            <ion-button (click)="getFromData()"> Consultar </ion-button>
                     </ion-card-header>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="myData">
+            <ion-col>
+                <ion-card>
+                    <ion-content>
+                        {{ myData.exp }}
+                    </ion-content>
                 </ion-card>
             </ion-col>
         </ion-row>
