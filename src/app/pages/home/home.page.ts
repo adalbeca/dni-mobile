@@ -19,27 +19,23 @@ export class HomePage implements OnInit {
     myData: object;
     tempData: object;
     isChecked: false;
-    defaultData: object;
+    defaultData: any;
 
     constructor(
         private storage: Storage,
         private router: Router,
-        private dataService: DataService ) {
-        this.storage.get('data').then((val) => {
-            console.log('el storage', val);
-            this.defaultData = val;
-        });
+        private dataService: DataService ) 
+        {   this.storageLook()   }
 
-    }
+
     ngOnInit() {
-
-        this.storage.get('checked').then(val => this.isChecked = val);
+        console.log('OnInit');
+        this.dataService.getDataStorage('checked');
         console.log('reviso', this.defaultData);
-
         this.customPickerOptions = {
             buttons: [{
                 text: 'Ok',
-                handler: (evento) => console.log('Clicked Save!', evento)
+                handler: ( evento ) => console.log('Clicked Save!', evento)
             }, {
                 text: 'Cancelar',
                 handler: () => {
@@ -49,6 +45,21 @@ export class HomePage implements OnInit {
             }]
         };
     }
+
+    storageLook(){
+        this.dataService.getDataStorage('data')
+            .then((val) => { 
+                console.log('Funcion Consulto Storage', val); 
+                this.defaultData= val;
+                return val
+            });
+    }
+
+
+    ionViewDidEnter(){
+        console.log('Storage 2', this.defaultData);
+    }
+
 
 
 
@@ -62,12 +73,13 @@ export class HomePage implements OnInit {
     getInput(event) {
         this.exp = event.detail.value;
     }
+
     setStorage(event) {
         if (!event.target.checked) {
-            this.storage.set('checked', true);
+            this.dataService.setDataStorage('checked', true);
         } else {
             this.storage.remove('data');
-            this.storage.set('checked', false);
+            this.dataService.setDataStorage('checked', false);
         }
         this.isChecked = event.target.checked;
     }
@@ -81,9 +93,8 @@ export class HomePage implements OnInit {
                     console.log('chequeo', this.isChecked);
                     console.log('llega', value);
                     if (value) {
-                        if (this.isChecked) {
-                            this.storage.set('data', JSON.stringify(data));
-                        }
+                            this.dataService.setDataStorage('data', JSON.stringify(data));
+                        
                     }
                     this.router.navigate(['detail'], value);
                 })

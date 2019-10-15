@@ -6,11 +6,16 @@
             <ion-col>
                 <ion-card mode="ios">
                     <ion-card-header color="primary">Consultemos el Status de tu DNI</ion-card-header>
-                    <ion-card-content class="ion-padding">
+                    <ion-card-content class="ion-padding" *ngIf="defaultData" >
 
                         <ion-item>
                             <ion-label position="floating">Nro Expediente</ion-label>
-                            <ion-input type="number" inputmode="numeric" required (ionChange)="getInput($event)"></ion-input>
+                            <ion-input
+                             [value]="defaultData.exp" 
+                             type="number" 
+                             inputmode="numeric"
+                             required (ionChange)="getInput($event)">
+                            </ion-input>
                         </ion-item>
 
                         <ion-item>
