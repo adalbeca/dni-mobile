@@ -10,28 +10,27 @@ import {Storage} from '@ionic/storage';
     styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
-    exp: string;
-    dia: string;
-    mes: string;
-    anio: string;
+    exp: string = '';
+    dia: string = '';
+    mes: string = '';
+    anio: string = '';
+    fecha: string = '';
     maxDate: Date = new Date();
     customPickerOptions;
     myData: object;
     tempData: object;
     isChecked: false;
-    defaultData: any;
-
+   
     constructor(
         private storage: Storage,
         private router: Router,
-        private dataService: DataService ) 
-        {   this.storageLook()   }
+        public dataService: DataService ) 
+        {   }
 
 
     ngOnInit() {
-        console.log('OnInit');
-        this.dataService.getDataStorage('checked');
-        console.log('reviso', this.defaultData);
+        this.getStorage('data');
+        this.getStorage('checked');
         this.customPickerOptions = {
             buttons: [{
                 text: 'Ok',
@@ -46,22 +45,19 @@ export class HomePage implements OnInit {
         };
     }
 
-    storageLook(){
-        this.dataService.getDataStorage('data')
-            .then((val) => { 
-                console.log('Funcion Consulto Storage', val); 
-                this.defaultData= val;
-                return val
-            });
+     getStorage(name: string){
+        this.dataService.getDataStorage(name).then(data => {
+            if(name==='data') {
+                const datax=JSON.parse(data);
+                if(data){
+                this.fecha = `${datax.dia}-${datax.mes}-${datax.anio}`;
+                this.exp = datax.exp
+                }
+            } else {
+                this.isChecked = data;
+            }
+        })
     }
-
-
-    ionViewDidEnter(){
-        console.log('Storage 2', this.defaultData);
-    }
-
-
-
 
     getDate(event) {
         const date = moment(event.detail.value);
@@ -76,30 +72,28 @@ export class HomePage implements OnInit {
 
     setStorage(event) {
         if (!event.target.checked) {
-            this.dataService.setDataStorage('checked', true);
+            this.dataService.setChecked(true);
         } else {
             this.storage.remove('data');
-            this.dataService.setDataStorage('checked', false);
+            this.dataService.setChecked(false);
         }
         this.isChecked = event.target.checked;
     }
 
     async getFromData() {
         if (this.exp) {
-            this.tempData = {exp: '1410852017', dia: '05', mes: '05', anio: '1983'};
+            const tempDataJoha = {exp: '1410852017', dia: '05', mes: '05', anio: '1983'};
+            const tempDataAnna = {exp: '1382022017', dia: '03', mes: '10', anio: '2010'};
             const data = {exp: this.exp, dia: this.dia, mes: this.mes, anio: this.anio};
+            console.log(this.isChecked);
             await this.dataService.getData(data)
                 .subscribe(value => {
-                    console.log('chequeo', this.isChecked);
-                    console.log('llega', value);
-                    if (value) {
-                            this.dataService.setDataStorage('data', JSON.stringify(data));
-                        
+                    if (value && !this.isChecked) {
+                            this.dataService.setDataStorage(JSON.stringify(data));
                     }
                     this.router.navigate(['detail'], value);
                 })
             ;
         }
     }
-
 }

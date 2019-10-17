@@ -11,13 +11,21 @@
 <ion-content>
   <ion-card>
     <ion-card-header>
-      Hola {{data.nombre}}
+      Hola <b>{{data.nombre}}</b>
     </ion-card-header>
     <ion-card-content>
-      <ion-text><p>El Status de tu consulta es: {{ data.tramiteStatus}} </p></ion-text>
-      <ion-text><p>Iniciaste el tramite el dia:  {{ data.inicioTramite}}</p></ion-text>
-      <ion-text><p>Tu precaria vence el dia: {{data.vencimientoTramite}}</p></ion-text>
+      <ion-text>
+        <p> El Status de tu consulta es: </p> 
+        <p> <b>{{ data.tramiteStatus}}</b> </p>
+      </ion-text>
+      <ion-text><p> Iniciaste el tramite el dia:  {{ data.inicioTramite}}</p></ion-text>
+      <ion-text><p> Tu precaria vence el dia: {{data.vencimientoTramite}}</p></ion-text>
     </ion-card-content>
+    <ion-card-header>  
+      
+        <ion-button href="/"> Back </ion-button>
+        
+    </ion-card-header>
   </ion-card>
 
 </ion-content>

@@ -6,12 +6,11 @@
             <ion-col>
                 <ion-card mode="ios">
                     <ion-card-header color="primary">Consultemos el Status de tu DNI</ion-card-header>
-                    <ion-card-content class="ion-padding" *ngIf="defaultData" >
-
+                    <ion-card-content class="ion-padding" >
                         <ion-item>
                             <ion-label position="floating">Nro Expediente</ion-label>
                             <ion-input
-                             [value]="defaultData.exp" 
+                             [value]="exp"
                              type="number" 
                              inputmode="numeric"
                              required (ionChange)="getInput($event)">
@@ -21,7 +20,8 @@
                         <ion-item>
                             <ion-label>Fecha Nacimiento</ion-label>
                             <ion-datetime displayFormat="DD MM YYYY"
-                                          max="{{maxDate.toISOString() }}"
+                                          [value]="fecha"
+                                          max="{{ maxDate.toISOString() }}"
                                           min="1920-01-01"
                                           placeholder="Indique Fecha"
                                           (ionChange)="getDate( $event )"
