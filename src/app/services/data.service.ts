@@ -1,11 +1,8 @@
-import { Operacion } from './../interfaces/interfaces';
+import { Respuesta, Expedientes } from './../interfaces/interfaces';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { Storage } from '@ionic/storage';
-
-
-
 
 
 @Injectable({
@@ -19,6 +16,7 @@ export class DataService {
     mes: '',
     anio: '',
   };
+  expedientes : Expedientes[] = [];
 
 
   constructor(
@@ -28,15 +26,16 @@ export class DataService {
 
   getData(data) {
     //const data = {exp: '1410852017', dia: '05', mes: '05', anio: '1983'};
-    return this.http.post('https://api-dni.adalbeca.com/giveme', data);
+    return this.http.post<Respuesta>('https://api-dni.adalbeca.com/giveme', data);
   }
 
-  setDataStorage(data){
-    const exists= this.operacion.exp === data.exp;
-    if (!exists) {
-      this.operacion = data;
-      this.storage.set('data', this.operacion);
-    }
+  async setDataStorage(data){
+    const findme = await this.getDataStorage().then(data=> data ? data.find(info=>info.exp === data.exp) : false );
+      if(!findme) {
+        await this.expedientes.push(data)
+        this.storage.set('data', this.expedientes);
+      }
+    
   }
 
   async getChecked(){
@@ -49,8 +48,8 @@ export class DataService {
       this.storage.set('checked', value);
   } 
 
-  getDataStorage(name: string){
-    return this.storage.get(name);
+  getDataStorage(){
+    return this.storage.get('data');
   }
 }
  

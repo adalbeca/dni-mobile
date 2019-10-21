@@ -1,8 +1,5 @@
 <ion-header class="margin-bottom">
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button text="" defaultHref="/"></ion-back-button>
-    </ion-buttons>
     <ion-title class="text-capitalize">Tu Consulta</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -22,9 +19,16 @@
       <ion-text><p> Tu precaria vence el dia: {{data.vencimientoTramite}}</p></ion-text>
     </ion-card-content>
     <ion-card-header>  
-      
-        <ion-button href="/"> Back </ion-button>
-        
+      <ion-buttons>
+        <ion-button href="/">
+          <ion-icon name="home" slot="start"></ion-icon>
+          <ion-label>Back</ion-label>
+        </ion-button>
+        <ion-button (click)="saveFavorite()" >
+          <ion-icon name="heart"  slot="start"></ion-icon>
+          <ion-label> Guardar</ion-label>
+        </ion-button>
+      </ion-buttons>
     </ion-card-header>
   </ion-card>
 

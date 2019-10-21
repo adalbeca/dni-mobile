@@ -30,23 +30,31 @@
                     </ion-card-content>
 
                     <ion-card-header>
-                        <ion-item lines="none">
-                            <ion-label>Recordar Expediente.</ion-label>
-                            <ion-checkbox [checked]="isChecked" (click)="setStorage($event)" color="primary" slot="start"></ion-checkbox>
-                        </ion-item>
-
                         <ion-button (click)="getFromData()"> Consultar </ion-button>
                     </ion-card-header>
-
                 </ion-card>
             </ion-col>
         </ion-row>
-        <ion-row *ngIf="myData">
+        <ion-row *ngIf="tempData" >
             <ion-col>
                 <ion-card>
-                    <ion-content>
-                        {{ myData.exp }}
-                    </ion-content>
+                    <ion-card-header>
+                        Expedientes Guardados
+                    </ion-card-header>
+                    <ion-card-content>
+                        <ion-item *ngFor="let data of tempData" >
+                           <ion-item> 
+                               <ion-label >
+                                    {{ data.exp }} 
+                               </ion-label>
+                               <ion-buttons slot="end">
+                                    <ion-icon (click)="buscame(data.exp)" name="search" slot="end"></ion-icon>
+                                    <ion-icon class="ion-padding" ios="ios-close" md="md-close"></ion-icon>
+                               </ion-buttons>
+                               
+                           </ion-item>
+                        </ion-item>
+                    </ion-card-content>
                 </ion-card>
             </ion-col>
         </ion-row>
