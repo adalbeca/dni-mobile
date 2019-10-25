@@ -11,8 +11,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 export class DetailPage implements OnInit {
   data: Expedientes;
   tmpData: {
-    exp: '1410852017',
-    fechaNac: '05/05/1983' };
+    exp: '',
+    fechaNac: '' };
 constructor(
       private route: ActivatedRoute,
       private router: Router,
@@ -23,7 +23,7 @@ constructor(
       if (this.router.getCurrentNavigation().extras.state) {
         this.data = <Expedientes> this.router.getCurrentNavigation().extras.state;
       } else {
-        this.data = this.tmpData;
+        this.data = <Expedientes>this.tmpData;
       }
     });
   }
@@ -33,7 +33,7 @@ constructor(
   }
 
   saveFavorite(){
-      const value = { exp: this.data.exp, fechaNac: this.data.fechaNac }
+      const value = { exp: this.data.exp, fechaNac: this.data.nacimiento }
       this.dataService.setDataStorage( value );
   }
 

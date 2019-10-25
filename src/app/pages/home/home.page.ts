@@ -27,13 +27,7 @@ export class HomePage implements OnInit {
         private router: Router,
         public dataService: DataService ) 
         {     
-            this.dataService.getDataStorage().then(data=> {
-                if(data){
-                data.map(data=>this.tempData.push(data))
-                } else {
-                    this.tempData=null;
-                }
-            }); 
+           this.getStorage();
         }
 
 
@@ -53,6 +47,16 @@ export class HomePage implements OnInit {
         };
     }
 
+    getStorage(){
+        this.dataService.getDataStorage().then(data=> {
+            if(data){
+            data.map(data=>this.tempData.push(data))
+            } else {
+                this.tempData=null;
+            }
+        }); 
+    }
+
     getDate(event) {
         const date = moment(event.detail.value);
         this.dia = date.format('DD');
@@ -64,22 +68,19 @@ export class HomePage implements OnInit {
         this.exp = event.detail.value;
     }
 
-    setStorage(event) {
-        if (!event.target.checked) {
-            this.dataService.setChecked(true);
-        } else {
-            this.storage.remove('data');
-            this.dataService.setChecked(false);
-        }
-        this.isChecked = event.target.checked;
-    }
-
-
     async buscame(event) {
         console.log('event', event)
         const data = await this.tempData.find(data=> data.exp === event);
-        const datax = {exp: data.exp, dia:data.dia, mes:data.mes, anio: data.anio};
+        const fecha= moment(data.fechaNac).format();
+        const anio = moment(fecha).format("YYYY");
+        const mes = moment(fecha).format("MM");
+        const dia = moment(fecha).format("DD");
+        const datax = { exp: data.exp, dia, mes, anio };
         this.queryData(datax);
+    }
+
+    deleteExp(event) {
+        this.dataService.deleteDataStorage(event);
     }
 
     queryData(data){

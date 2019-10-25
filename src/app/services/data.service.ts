@@ -22,7 +22,9 @@ export class DataService {
   constructor(
     private http: HttpClient,
     private storage: Storage,
-    ) {}
+    ) {
+      this.loadFavorites();
+    }
 
   getData(data) {
     //const data = {exp: '1410852017', dia: '05', mes: '05', anio: '1983'};
@@ -30,12 +32,19 @@ export class DataService {
   }
 
   async setDataStorage(data){
-    const findme = await this.getDataStorage().then(data=> data ? data.find(info=>info.exp === data.exp) : false );
+    const findme = await this.getDataStorage().then(exp=> exp ? exp.find(info=>info.exp === data.exp) : false );
       if(!findme) {
-        await this.expedientes.push(data)
+        await this.expedientes.push(data);
+        console.log(this.expedientes);
         this.storage.set('data', this.expedientes);
       }
-    
+  }
+
+  deleteDataStorage(expediente){
+    console.log(expediente);
+    const newF=this.expedientes.filter(info => info.exp !== expediente);
+    console.log(newF);
+    this.storage.set('data', newF);
   }
 
   async getChecked(){
@@ -49,7 +58,15 @@ export class DataService {
   } 
 
   getDataStorage(){
-    return this.storage.get('data');
+    return this.storage.get('data').then(data=> data);
   }
+
+  async loadFavorites(){
+    console.log('cargamos');
+    const favs = await this.storage.get('data');
+    if( favs ) {
+      this.expedientes = favs;
+    }
+}
 }
  

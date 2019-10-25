@@ -1,6 +1,7 @@
 <app-header-home title="Consulta tu DNI"></app-header-home>
 
 <ion-content>
+     
     <ion-grid>
         <ion-row>
             <ion-col>
@@ -49,7 +50,7 @@
                                </ion-label>
                                <ion-buttons slot="end">
                                     <ion-icon (click)="buscame(data.exp)" name="search" slot="end"></ion-icon>
-                                    <ion-icon class="ion-padding" ios="ios-close" md="md-close"></ion-icon>
+                                    <ion-icon (click)="deleteExp(data.exp)" class="ion-padding" ios="ios-close" md="md-close"></ion-icon>
                                </ion-buttons>
                                
                            </ion-item>

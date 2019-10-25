@@ -7,5 +7,6 @@ export interface Expedientes {
     dia?: number;
     mes?: number;
     anio?: number;
+    nacimiento: string;
     fechaNac: string;
   }
